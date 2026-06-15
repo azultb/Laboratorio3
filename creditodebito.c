@@ -1,5 +1,6 @@
 //Laboratorio 3
 //Alumnas: Azul Barra y Alexia Insua
+//https://github.com/azultb/Laboratorio3.git
 
 #include <stdio.h>
 #include <stdlib.h>
