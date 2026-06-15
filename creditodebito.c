@@ -134,4 +134,43 @@ int main()
     close(pipeCredito[1]);
     close(pipeDebito[1]);
 
+    while(!creditoFinalizado || !debitoFinalizado)
+    {
+        if(!creditoFinalizado)
+        {
+            leidos = read(pipeCredito[0], &monto, sizeof(double));
+            if(leidos>0)
+            {
+                printf("Credito: %.2f, monto);
+            }
+            else if(leidos==0)
+            {
+                creditoFinalizado = 1;
+                close(pipeCredito[0]);
+            }
+        }
+
+        if(!debitoFinalizado)
+        {
+            leidos = read(pipeDebito[0], &monto, sizeof(double));
+            if(leidos>0)
+            {
+                printf("Debito: %.2f, monto);
+            }
+            else if(leidos==0)
+            {
+                debitoFinalizado = 1;
+                close(pipeDebito[0]);
+            }
+        }
+    }
+    wait(NULL);
+    wait(NULL);
+
+    printf("\nSaldo final: %.2f\n", mem->saldo);
+
+    sem_destroy(&mem->semaforo);
+    munmap(mem, sizeof(memoriaCompartida));
+
+    return 0;
 }
