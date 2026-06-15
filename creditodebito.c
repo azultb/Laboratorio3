@@ -89,4 +89,49 @@ int main()
 
     mem = mmap(NULL, sizeof(memoriaCompartida), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 
+    if(mem==MAP_FAILED)
+    {
+        perror("mmap");
+        exit(1);
+    }
+
+    sem_init(&mem->semaforo, 1, 1);
+    mem->saldo = 0;
+
+    if(pipe(pipeCredito)==-1)
+    {
+        perror("Error al crear pipeCredito");
+        exit(1);
+    }
+
+    if(pipe(pipeDebito)==-1)
+    {
+        perror("Error al crear pipeDebito");
+        exit(1);
+    }
+
+    fcntl(pipeCredito[0], F_SETFL, O_NONBLOCK);
+    fcntl(pipeDebito[0], F_SETFL, O_NONBLOCK);
+
+    hijoCredito = fork();
+    if(hijoCredito==0)
+    {
+        close(pipeCredito[0]);
+        close(pipeDebito[0]);
+        close(pipeDebito[1]);
+        credito("credito.txt", pipeCredito);
+    }
+
+    hijoDebito = fork();
+    if(hijoDebito==0)
+    {
+        close(pipeDebito[0]);
+        close(pipeCredito[0]);
+        close(pipeCredito[1]);
+        debito("debito.txt", pipeDebito);
+    }
+
+    close(pipeCredito[1]);
+    close(pipeDebito[1]);
+
 }
