@@ -79,6 +79,4 @@ void debito(char *archivo_montos, int p[])
 int main()
 {
     
-
-    
 }
