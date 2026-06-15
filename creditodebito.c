@@ -73,11 +73,20 @@ void debito(char *archivo_montos, int p[])
     exit(0);
 }
 
-
-
-
-
 int main()
 {
-    
+    int pipeCredito[2];
+    int pipeDebito[2];
+
+    pid_t hijoCredito;
+    pid_t hijoDebito;
+
+    double monto;
+    ssize_t leidos;
+
+    int creditoFinalizado = 0;
+    int debitoFinalizado = 0;
+
+    mem = mmap(NULL, sizeof(memoriaCompartida), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+
 }
