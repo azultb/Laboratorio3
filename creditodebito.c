@@ -8,6 +8,7 @@
 #include <sys/wait.h>
 #include <sys/mman.h>
 #include <semaphore.h>
+#include <fcntl.h>
 
 typedef struct 
 {
@@ -37,6 +38,7 @@ void credito(char *archivo_montos, int p[])
         sem_post(&mem->semaforo);
 
         write(p[1], &monto, sizeof(double));
+        usleep(1000);
     }
 
     fclose(f);
@@ -65,6 +67,7 @@ void debito(char *archivo_montos, int p[])
         sem_post(&mem->semaforo);
 
         write(p[1], &monto, sizeof(double));
+        usleep(1000);
     }
 
     fclose(f);
@@ -73,11 +76,9 @@ void debito(char *archivo_montos, int p[])
     exit(0);
 }
 
-
-
-
-
 int main()
 {
+    
+
     
 }
