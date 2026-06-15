@@ -17,7 +17,7 @@ typedef struct
 
 memoriaCompartida *mem;
 
-void credito(char archivo_montos, int p[])
+void credito(char *archivo_montos, int p[])
 {
     FILE *f;
     double monto;
@@ -44,6 +44,36 @@ void credito(char archivo_montos, int p[])
 
     exit(0);
 }
+
+void debito(char *archivo_montos, int p[])
+{
+    FILE *f;
+    double monto;
+
+    f=fopen(archivo_montos,"r");
+
+    if(f==NULL)
+    {
+        perror("Error al abrir debito.txt");
+        exit(1);
+    }
+
+    while(fscanf(f,"%lf",&monto)==1)
+    {
+        sem_wait(&mem->semaforo);
+        mem->saldo -= monto;
+        sem_post(&mem->semaforo);
+
+        write(p[1], &monto, sizeof(double));
+    }
+
+    fclose(f);
+    close(p[1]);
+
+    exit(0);
+}
+
+
 
 
 
